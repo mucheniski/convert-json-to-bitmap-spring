@@ -3,11 +3,13 @@ package com.example.convertjsontobitmapspring.domain.service;
 import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentation;
 import com.example.convertjsontobitmapspring.common.Base64Converter;
 import com.example.convertjsontobitmapspring.domain.domain.Account;
+import com.example.convertjsontobitmapspring.domain.enums.FileType;
 import com.example.convertjsontobitmapspring.domain.port.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.nio.file.FileSystems;
 import java.util.UUID;
 
@@ -30,14 +32,15 @@ public class AccountService {
     public String encodeImageToBase64(Long id, StatementRepresentation statementRepresentation) {
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
-        String savePath = getFullPath("img.txt");
+        String newName = UUID.randomUUID().toString() + "_" + FileType.TEXT.getExtension();
+        String savePath = getFullPath(newName);
         return base64Converter.encodeImageToBase64(imgPath, savePath);
     }
 
     public void decodeBase64ToImage(Long id, StatementRepresentation statementRepresentation) {
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
-        String newName = UUID.randomUUID().toString() + "_img.bmp";
+        String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
         String savePath = getFullPath(newName);
         base64Converter.decodeBase64ToImage(imgPath, savePath);
     }

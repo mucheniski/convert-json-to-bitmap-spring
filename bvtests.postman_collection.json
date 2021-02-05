@@ -27,8 +27,18 @@
 		{
 			"name": "encode-image-to-base64",
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "templateFile",
+							"type": "file",
+							"src": "/C:/ws-developer/convert-json-to-bitmap-spring/img/img.bmp"
+						}
+					]
+				},
 				"url": {
 					"raw": "localhost:8080/accounts/1/encode-image-to-base64",
 					"host": [
@@ -47,8 +57,18 @@
 		{
 			"name": "decode-base64-to-image",
 			"request": {
-				"method": "GET",
+				"method": "PUT",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "templateFile",
+							"type": "file",
+							"src": "/C:/ws-developer/convert-json-to-bitmap-spring/img/1d60787d-9951-4d28-83f6-3dd845040596_.txt"
+						}
+					]
+				},
 				"url": {
 					"raw": "localhost:8080/accounts/1/decode-base64-to-image",
 					"host": [
