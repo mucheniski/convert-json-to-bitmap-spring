@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 public class StatementRepresentation {
@@ -15,6 +17,6 @@ public class StatementRepresentation {
     private MultipartFile templateFile;
 
     private String name;
-    private String balance;
+    private BigDecimal balance;
 
 }

@@ -33,6 +33,8 @@ public class AccountService {
     }
 
     public String encodeImageToBase64(Long id, StatementRepresentation statementRepresentation) throws IOException {
+        fillRepresentation(id, statementRepresentation);
+
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.TEXT.getExtension();
@@ -41,11 +43,20 @@ public class AccountService {
     }
 
     public void decodeBase64ToImage(Long id, StatementRepresentation statementRepresentation) throws IOException {
+        fillRepresentation(id, statementRepresentation);
+
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
         String savePath = getFullPath(newName);
         base64Converter.decodeBase64ToImage(imgPath, savePath);
+    }
+
+    private StatementRepresentation fillRepresentation(Long id, StatementRepresentation statementRepresentation) {
+        Account account = findById(id);
+        statementRepresentation.setName(account.getName());
+        statementRepresentation.setBalance(account.getBalance());
+        return statementRepresentation;
     }
 
     private String getOriginalFilename(StatementRepresentation statementRepresentation) {
