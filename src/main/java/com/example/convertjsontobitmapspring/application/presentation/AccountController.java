@@ -7,6 +7,8 @@ import com.example.convertjsontobitmapspring.domain.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
@@ -20,12 +22,12 @@ public class AccountController {
     }
 
     @PutMapping("/{id}/encode-image-to-base64")
-    public String encodeImageToBase64(@PathVariable Long id, StatementRepresentation statementRepresentation) {
+    public String encodeImageToBase64(@PathVariable Long id, StatementRepresentation statementRepresentation) throws IOException {
         return accountService.encodeImageToBase64(id, statementRepresentation);
     }
 
     @PutMapping("/{id}/decode-base64-to-image")
-    public void decodeBase64ToImage(@PathVariable Long id, StatementRepresentation statementRepresentation) {
+    public void decodeBase64ToImage(@PathVariable Long id, StatementRepresentation statementRepresentation) throws IOException {
         accountService.decodeBase64ToImage(id, statementRepresentation);
     }
 

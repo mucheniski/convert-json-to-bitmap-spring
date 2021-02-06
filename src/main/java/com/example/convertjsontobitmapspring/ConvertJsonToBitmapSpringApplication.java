@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ConvertJsonToBitmapSpringApplication {
 
+	// TODO: Criar as exceptions
+	// TODO: Ver como passar os dados retornados do JSON para a Base64
 	public static void main(String[] args) {
 		SpringApplication.run(ConvertJsonToBitmapSpringApplication.class, args);
 	}
