@@ -19,4 +19,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), status, request);
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<?> handleNullPointerException(NullPointerException ex, WebRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        return handleExceptionInternal(ex, "NullPointerException", new HttpHeaders(), status, request);
+    }
+
 }
