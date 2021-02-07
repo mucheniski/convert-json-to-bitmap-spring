@@ -1,5 +1,6 @@
 package com.example.convertjsontobitmapspring.application.presentation.representation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 import com.sun.istack.Nullable;
 import lombok.Getter;
@@ -14,9 +15,11 @@ import java.math.BigDecimal;
 public class StatementRepresentation {
 
     @NotNull
+    @JsonIgnore
     private MultipartFile templateFile;
 
     private String name;
     private BigDecimal balance;
+    private String templateBase64;
 
 }

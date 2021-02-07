@@ -6,12 +6,10 @@ import com.example.convertjsontobitmapspring.domain.domain.Account;
 import com.example.convertjsontobitmapspring.domain.enums.FileType;
 import com.example.convertjsontobitmapspring.domain.exception.EntityNotFoundException;
 import com.example.convertjsontobitmapspring.domain.port.AccountRepository;
-import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.UUID;
@@ -32,31 +30,28 @@ public class AccountService {
         return accountRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id not found: " + id));
     }
 
-    public String encodeImageToBase64(Long id, StatementRepresentation statementRepresentation) throws IOException {
-        fillRepresentation(id, statementRepresentation);
+    public StatementRepresentation encodeImageToBase64(Long id, StatementRepresentation statementRepresentation) throws IOException {
+        Account account = findById(id);
 
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.TEXT.getExtension();
         String savePath = getFullPath(newName);
-        return base64Converter.encodeImageToBase64(imgPath, savePath);
+        String textBase64 = base64Converter.encodeImageToBase64(imgPath, savePath);
+
+        statementRepresentation.setName(account.getName());
+        statementRepresentation.setBalance(account.getBalance());
+        statementRepresentation.setTemplateBase64(textBase64);
+
+        return statementRepresentation;
     }
 
-    public void decodeBase64ToImage(Long id, StatementRepresentation statementRepresentation) throws IOException {
-        fillRepresentation(id, statementRepresentation);
-
+    public void decodeBase64ToImage(StatementRepresentation statementRepresentation) throws IOException {
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
         String savePath = getFullPath(newName);
         base64Converter.decodeBase64ToImage(imgPath, savePath);
-    }
-
-    private StatementRepresentation fillRepresentation(Long id, StatementRepresentation statementRepresentation) {
-        Account account = findById(id);
-        statementRepresentation.setName(account.getName());
-        statementRepresentation.setBalance(account.getBalance());
-        return statementRepresentation;
     }
 
     private String getOriginalFilename(StatementRepresentation statementRepresentation) {
