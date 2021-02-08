@@ -1,6 +1,7 @@
 package com.example.convertjsontobitmapspring.domain.service;
 
 import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentation;
+import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentationWithFile;
 import com.example.convertjsontobitmapspring.common.Base64Converter;
 import com.example.convertjsontobitmapspring.domain.domain.Account;
 import com.example.convertjsontobitmapspring.domain.enums.FileType;
@@ -9,9 +10,15 @@ import com.example.convertjsontobitmapspring.domain.port.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -23,6 +30,9 @@ public class AccountService {
     @Autowired
     private Base64Converter base64Converter;
 
+    @Autowired
+    private TemplateEngine thymeleaf;
+
     @Value("${base64converter.originalfilepath}")
     private String originalfilepath;
 
@@ -30,7 +40,15 @@ public class AccountService {
         return accountRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id not found: " + id));
     }
 
-    public StatementRepresentation encodeImageToBase64AndSaveFile(Long id, StatementRepresentation statementRepresentation) throws IOException {
+    public StatementRepresentation fillStatement(Long id) {
+        Account account = findById(id);
+        StatementRepresentation statementRepresentation = new StatementRepresentation();
+        statementRepresentation.setName(account.getName());
+        statementRepresentation.setBalance(account.getBalance());
+        return statementRepresentation;
+    }
+
+    public StatementRepresentationWithFile encodeImageToBase64AndSaveFile(Long id, StatementRepresentationWithFile statementRepresentation) throws IOException {
         Account account = findById(id);
 
         String fileName = getOriginalFilename(statementRepresentation);
@@ -46,7 +64,7 @@ public class AccountService {
         return statementRepresentation;
     }
 
-    public void decodeBase64ToImageAndSaveFile(StatementRepresentation statementRepresentation) throws IOException {
+    public void decodeBase64ToImageAndSaveFile(StatementRepresentationWithFile statementRepresentation) throws IOException {
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
@@ -54,7 +72,7 @@ public class AccountService {
         base64Converter.decodeBase64ToImageAndSaveFile(imgPath, savePath);
     }
 
-    private String getOriginalFilename(StatementRepresentation statementRepresentation) {
+    private String getOriginalFilename(StatementRepresentationWithFile statementRepresentation) {
         return statementRepresentation.getTemplateFile().getOriginalFilename();
     }
 
