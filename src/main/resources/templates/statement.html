@@ -6,7 +6,8 @@
 </head>
     <body>
         <div>
-            <p th:text="${statement?.name}">test</p>
+            <p th:text="${statement?.name}">name</p>
+            <p th:text="${#numbers.formatDecimal(statement?.balance, 0, 'POINT', 2, 'COMMA')}">balance</p>
         </div>
     </body>
 </html>
