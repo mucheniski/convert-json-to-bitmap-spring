@@ -8,13 +8,13 @@ import java.util.Base64;
 @Service
 public class Base64Converter {
 
-    public String encodeImageToBase64(String imgPath, String savePath) throws IOException {
+    public String encodeImageToBase64AndSaveFile(String imgPath, String savePath) throws IOException {
 
         FileInputStream imageStream = new FileInputStream(imgPath);
         byte[] bytes = imageStream.readAllBytes();
         String imageString = Base64.getEncoder().encodeToString(bytes);
 
-        // Write base64 in file
+        // Write base64 in file if you need
         FileWriter fileWriter = new FileWriter(savePath);
         fileWriter.write(imageString);
         fileWriter.close();
@@ -25,7 +25,7 @@ public class Base64Converter {
 
     }
 
-    public void decodeBase64ToImage(String txtPath, String savePath) throws IOException {
+    public void decodeBase64ToImageAndSaveFile(String txtPath, String savePath) throws IOException {
 
         FileInputStream inputStream = new FileInputStream(txtPath);
         byte[] bytesTxt = inputStream.readAllBytes();

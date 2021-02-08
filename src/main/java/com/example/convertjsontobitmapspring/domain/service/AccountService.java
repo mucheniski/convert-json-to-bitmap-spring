@@ -30,14 +30,14 @@ public class AccountService {
         return accountRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id not found: " + id));
     }
 
-    public StatementRepresentation encodeImageToBase64(Long id, StatementRepresentation statementRepresentation) throws IOException {
+    public StatementRepresentation encodeImageToBase64AndSaveFile(Long id, StatementRepresentation statementRepresentation) throws IOException {
         Account account = findById(id);
 
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.TEXT.getExtension();
         String savePath = getFullPath(newName);
-        String textBase64 = base64Converter.encodeImageToBase64(imgPath, savePath);
+        String textBase64 = base64Converter.encodeImageToBase64AndSaveFile(imgPath, savePath);
 
         statementRepresentation.setName(account.getName());
         statementRepresentation.setBalance(account.getBalance());
@@ -46,12 +46,12 @@ public class AccountService {
         return statementRepresentation;
     }
 
-    public void decodeBase64ToImage(StatementRepresentation statementRepresentation) throws IOException {
+    public void decodeBase64ToImageAndSaveFile(StatementRepresentation statementRepresentation) throws IOException {
         String fileName = getOriginalFilename(statementRepresentation);
         String imgPath = getFullPath(fileName);
         String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
         String savePath = getFullPath(newName);
-        base64Converter.decodeBase64ToImage(imgPath, savePath);
+        base64Converter.decodeBase64ToImageAndSaveFile(imgPath, savePath);
     }
 
     private String getOriginalFilename(StatementRepresentation statementRepresentation) {
