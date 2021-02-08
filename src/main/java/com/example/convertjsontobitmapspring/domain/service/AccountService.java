@@ -11,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -29,9 +26,6 @@ public class AccountService {
 
     @Autowired
     private Base64Converter base64Converter;
-
-    @Autowired
-    private TemplateEngine thymeleaf;
 
     @Value("${base64converter.originalfilepath}")
     private String originalfilepath;
