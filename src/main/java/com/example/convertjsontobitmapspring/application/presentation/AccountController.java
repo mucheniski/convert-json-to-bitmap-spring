@@ -40,17 +40,15 @@ public class AccountController {
     }
 
     @GetMapping("/{id}/statement")
-    public ModelAndView statement(@PathVariable Long id, Model model){
-
+    public ModelAndView statement(@PathVariable Long id, Model model) {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
         model.addAttribute("statement", statementRepresentation);
+        ModelAndView statementPage = new ModelAndView("statement");
 
-        return new ModelAndView("statement");
+        htmlConverter.convertHtmlToBitmap(statementPage);
+
+        return statementPage;
     }
 
-    @GetMapping("/test")
-    public void test() {
-        htmlConverter.convertHtmlToBitmap();
-    }
 
 }
