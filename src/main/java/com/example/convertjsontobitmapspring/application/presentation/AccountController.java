@@ -21,9 +21,6 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private HTMLConverter htmlConverter;
-
     @GetMapping("/{id}")
     public Account findById(@PathVariable Long id) {
         return accountService.findById(id);
@@ -44,8 +41,6 @@ public class AccountController {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
         model.addAttribute("statement", statementRepresentation);
         ModelAndView statementPage = new ModelAndView("statement");
-
-        htmlConverter.convertHtmlToBitmap(statementPage);
 
         return statementPage;
     }

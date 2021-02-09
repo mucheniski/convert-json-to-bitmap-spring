@@ -27,7 +27,7 @@ public class AccountService {
     @Autowired
     private Base64Converter base64Converter;
 
-    @Value("${base64converter.originalfilepath}")
+    @Value("${default.imagePath}")
     private String originalfilepath;
 
     public Account findById(Long id) {
@@ -45,8 +45,7 @@ public class AccountService {
     public StatementRepresentationWithFile encodeImageToBase64AndSaveFile(Long id, StatementRepresentationWithFile statementRepresentation) throws IOException {
         Account account = findById(id);
 
-        String fileName = getOriginalFilename(statementRepresentation);
-        String imgPath = getFullPath(fileName);
+        String imgPath = getImgPath(statementRepresentation);
         String newName = UUID.randomUUID().toString() + "_" + FileType.TEXT.getExtension();
         String savePath = getFullPath(newName);
         String textBase64 = base64Converter.encodeImageToBase64AndSaveFile(imgPath, savePath);
@@ -59,15 +58,15 @@ public class AccountService {
     }
 
     public void decodeBase64ToImageAndSaveFile(StatementRepresentationWithFile statementRepresentation) throws IOException {
-        String fileName = getOriginalFilename(statementRepresentation);
-        String imgPath = getFullPath(fileName);
+        String imgPath = getImgPath(statementRepresentation);
         String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
         String savePath = getFullPath(newName);
         base64Converter.decodeBase64ToImageAndSaveFile(imgPath, savePath);
     }
 
-    private String getOriginalFilename(StatementRepresentationWithFile statementRepresentation) {
-        return statementRepresentation.getTemplateFile().getOriginalFilename();
+    private String getImgPath(StatementRepresentationWithFile statementRepresentation) {
+        String fileName = statementRepresentation.getTemplateFile().getOriginalFilename();
+        return getFullPath(fileName);
     }
 
     private String getFullPath(String fileName) {
