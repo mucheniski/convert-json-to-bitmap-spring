@@ -2,6 +2,7 @@ package com.example.convertjsontobitmapspring.application.presentation;
 
 import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentation;
 import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentationWithFile;
+import com.example.convertjsontobitmapspring.common.HTMLConverter;
 import com.example.convertjsontobitmapspring.domain.domain.Account;
 import com.example.convertjsontobitmapspring.domain.service.AccountService;
 
@@ -19,6 +20,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private HTMLConverter htmlConverter;
 
     @GetMapping("/{id}")
     public Account findById(@PathVariable Long id) {
@@ -42,6 +46,11 @@ public class AccountController {
         model.addAttribute("statement", statementRepresentation);
 
         return new ModelAndView("statement");
+    }
+
+    @GetMapping("/test")
+    public void test() {
+        htmlConverter.convertHtmlToBitmap();
     }
 
 }
