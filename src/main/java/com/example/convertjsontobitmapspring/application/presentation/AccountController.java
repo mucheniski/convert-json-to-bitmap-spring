@@ -26,13 +26,13 @@ public class AccountController {
         return accountService.findById(id);
     }
 
-    @PutMapping("/{id}/encode-image-to-base64")
-    public StatementRepresentationWithFile encodeImageToBase64AndSave(@PathVariable Long id, @Valid StatementRepresentationWithFile statementRepresentation) throws IOException {
-        return accountService.encodeImageToBase64AndSaveFile(id, statementRepresentation);
+    @PutMapping("/encode-image-to-base64")
+    public void encodeImageToBase64AndSave(@Valid StatementRepresentationWithFile statementRepresentation) throws IOException {
+        accountService.encodeImageToBase64AndSaveFile(statementRepresentation);
     }
 
-    @PutMapping("/{id}/decode-base64-to-image")
-    public void decodeBase64ToImageAndSaveFile(@PathVariable Long id, @Valid StatementRepresentationWithFile statementRepresentation) throws IOException {
+    @PutMapping("/decode-base64-to-image")
+    public void decodeBase64ToImageAndSaveFile(@Valid StatementRepresentationWithFile statementRepresentation) throws IOException {
         accountService.decodeBase64ToImageAndSaveFile(statementRepresentation);
     }
 

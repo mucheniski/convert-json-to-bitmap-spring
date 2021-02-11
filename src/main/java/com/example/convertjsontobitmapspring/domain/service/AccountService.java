@@ -52,19 +52,11 @@ public class AccountService {
         return base64Converter.encodeImageToBase64(imageBitmap);
     }
 
-    public StatementRepresentationWithFile encodeImageToBase64AndSaveFile(Long id, StatementRepresentationWithFile statementRepresentation) throws IOException {
-        Account account = findById(id);
-
+    public void encodeImageToBase64AndSaveFile(StatementRepresentationWithFile statementRepresentation) throws IOException {
         String imgPath = getImgPath(statementRepresentation);
         String newName = UUID.randomUUID().toString() + "_" + FileType.TEXT.getExtension();
         String savePath = getFullPath(newName);
         String textBase64 = base64Converter.encodeImageToBase64AndSaveFile(imgPath, savePath);
-
-        statementRepresentation.setName(account.getName());
-        statementRepresentation.setBalance(account.getBalance());
-        statementRepresentation.setTemplateBase64(textBase64);
-
-        return statementRepresentation;
     }
 
     public void decodeBase64ToImageAndSaveFile(StatementRepresentationWithFile statementRepresentation) throws IOException {

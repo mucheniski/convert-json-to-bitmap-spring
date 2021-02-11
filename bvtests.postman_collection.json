@@ -40,14 +40,13 @@
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/accounts/1/encode-image-to-base64",
+					"raw": "localhost:8080/accounts/encode-image-to-base64",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"accounts",
-						"1",
 						"encode-image-to-base64"
 					]
 				}
@@ -65,19 +64,18 @@
 						{
 							"key": "templateFile",
 							"type": "file",
-							"src": "/C:/ws-developer/convert-json-to-bitmap-spring/img/5bd99a22-f516-4c59-a3c2-81fb27781e71_.txt"
+							"src": "/C:/ws-developer/convert-json-to-bitmap-spring/img/testencodebase64.txt"
 						}
 					]
 				},
 				"url": {
-					"raw": "localhost:8080/accounts/1/decode-base64-to-image",
+					"raw": "localhost:8080/accounts/decode-base64-to-image",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"accounts",
-						"1",
 						"decode-base64-to-image"
 					]
 				}
@@ -90,7 +88,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/accounts/1/statement",
+					"raw": "http://localhost:8080/accounts/2/statementbase64",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -98,8 +96,8 @@
 					"port": "8080",
 					"path": [
 						"accounts",
-						"1",
-						"statement"
+						"2",
+						"statementbase64"
 					]
 				}
 			},
