@@ -62,6 +62,13 @@
 			<artifactId>thymeleaf-extras-java8time</artifactId>
 		</dependency>
 
+		<!-- https://jar-download.com/artifacts/org.xhtmlrenderer/core-renderer/R8pre2/source-code/org/xhtmlrenderer/swing/Java2DRenderer.java -->
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>core-renderer</artifactId>
+			<version>R8pre2</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

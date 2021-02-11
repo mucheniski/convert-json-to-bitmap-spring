@@ -7,6 +7,8 @@ import com.example.convertjsontobitmapspring.domain.domain.Account;
 import com.example.convertjsontobitmapspring.domain.service.AccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.StreamingHttpOutputMessage;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,8 +44,8 @@ public class AccountController {
         model.addAttribute("statement", statementRepresentation);
         ModelAndView statementPage = new ModelAndView("statement");
 
+        accountService.convertHTMLtoBitmap(statementPage);
         return statementPage;
     }
-
 
 }

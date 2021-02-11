@@ -2,4 +2,5 @@
 
 [link of tutorial](https://www.youtube.com/watch?v=M1aWWLnygdU)
 
-[Convert HTML to Image](https://blog.aspose.com/2021/01/11/html-webpage-string-to-image-jpg-png-java/) 
+[Convert HTML to Bitmap](https://www.oodlestechnologies.com/blogs/how-to-convert--html-to-image-and-saving-into-a-file-using-java/)
+

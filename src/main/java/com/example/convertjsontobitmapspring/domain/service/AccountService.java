@@ -3,6 +3,7 @@ package com.example.convertjsontobitmapspring.domain.service;
 import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentation;
 import com.example.convertjsontobitmapspring.application.presentation.representation.StatementRepresentationWithFile;
 import com.example.convertjsontobitmapspring.common.Base64Converter;
+import com.example.convertjsontobitmapspring.common.HTMLConverter;
 import com.example.convertjsontobitmapspring.domain.domain.Account;
 import com.example.convertjsontobitmapspring.domain.enums.FileType;
 import com.example.convertjsontobitmapspring.domain.exception.EntityNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -26,6 +28,9 @@ public class AccountService {
 
     @Autowired
     private Base64Converter base64Converter;
+
+    @Autowired
+    private HTMLConverter htmlConverter;
 
     @Value("${default.imagePath}")
     private String originalfilepath;
@@ -62,6 +67,18 @@ public class AccountService {
         String newName = UUID.randomUUID().toString() + "_" + FileType.BITMAP.getExtension();
         String savePath = getFullPath(newName);
         base64Converter.decodeBase64ToImageAndSaveFile(imgPath, savePath);
+    }
+
+    public void convertHTMLtoBitmap(ModelAndView modelAndView) {
+
+        try {
+            htmlConverter.convertToBitmap(modelAndView);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private String getImgPath(StatementRepresentationWithFile statementRepresentation) {
