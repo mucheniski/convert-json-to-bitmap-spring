@@ -9,12 +9,17 @@ import com.example.convertjsontobitmapspring.domain.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.StreamingHttpOutputMessage;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/accounts")
@@ -39,12 +44,12 @@ public class AccountController {
     }
 
     @GetMapping("/{id}/statement")
-    public ModelAndView statement(@PathVariable Long id, Model model) {
+    public ModelAndView statement(@PathVariable Long id, Model model, HttpServletRequest request) throws Exception {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
         model.addAttribute("statement", statementRepresentation);
         ModelAndView statementPage = new ModelAndView("statement");
-
-        accountService.convertHTMLtoBitmap(statementPage);
+        accountService.convertHTMLtoBitmap(statementPage, model, request);
+        // accountService.convertHTMLtoBitmap(statementPage, model);
         return statementPage;
     }
 

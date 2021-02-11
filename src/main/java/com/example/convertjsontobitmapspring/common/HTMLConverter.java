@@ -1,22 +1,24 @@
 package com.example.convertjsontobitmapspring.common;
 
 import com.example.convertjsontobitmapspring.domain.enums.FileType;
-import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
+import org.apache.commons.io.FileUtils;
+import org.aspectj.util.FileUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.ViewResolver;
 import org.xhtmlrenderer.swing.Java2DRenderer;
-import org.xhtmlrenderer.util.FSImageWriter;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
+import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.UUID;
+import java.nio.charset.Charset;
+import java.util.Locale;
 
 @Service
 public class HTMLConverter {
@@ -27,20 +29,27 @@ public class HTMLConverter {
     @Value("${default.imagePath}")
     private String defaultImagePath;
 
-    public void convertToBitmap(ModelAndView modelAndView) throws IOException {
+    @Autowired
+    private ViewResolver viewResolver;
 
-        File file = new File(defaultHTMLTemplatePath + "statement.html");
+    public void convertToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+        String pageHTML = getHtmlCode(statementPage, model, request);
+        File fileHTML = new File("page.html");
+        FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
         int width = 200;
         int height = 300;
-        Java2DRenderer renderer = new Java2DRenderer(file, width, height);
+        Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
         BufferedImage image = renderer.getImage();
-        File newFile = new File(defaultImagePath + "teste.bmp");
+        File fileBitmap = new File(defaultImagePath + "teste.bmp");
 
-        ImageIO.write(image, "bmp", newFile);
+        // Write file on disk
+        ImageIO.write(image, "bmp", fileBitmap);
     }
 
-    private String addHtmlExtension(String viewName) {
-        return viewName + FileType.HTML.getExtension();
+    private String getHtmlCode(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+        View resolvedView = viewResolver.resolveViewName(statementPage.getViewName(), new Locale("pt", "BR"));
+        MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
+        resolvedView.render(model.asMap(), request, mockHttpServletResponse);
+        return mockHttpServletResponse.getContentAsString();
     }
-
 }

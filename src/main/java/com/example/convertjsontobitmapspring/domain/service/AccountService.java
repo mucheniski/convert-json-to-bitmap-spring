@@ -11,9 +11,11 @@ import com.example.convertjsontobitmapspring.domain.port.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.util.HashMap;
@@ -69,16 +71,8 @@ public class AccountService {
         base64Converter.decodeBase64ToImageAndSaveFile(imgPath, savePath);
     }
 
-    public void convertHTMLtoBitmap(ModelAndView modelAndView) {
-
-        try {
-            htmlConverter.convertToBitmap(modelAndView);
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+    public void convertHTMLtoBitmap(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+        htmlConverter.convertToBitmap(statementPage, model, request);
     }
 
     private String getImgPath(StatementRepresentationWithFile statementRepresentation) {
