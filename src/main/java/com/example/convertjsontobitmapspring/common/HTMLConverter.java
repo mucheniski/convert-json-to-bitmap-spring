@@ -32,7 +32,17 @@ public class HTMLConverter {
     @Autowired
     private ViewResolver viewResolver;
 
-    public void convertToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+    public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception  {
+        String pageHTML = getHtmlCode(statementPage, model, request);
+        File fileHTML = new File("page.html");
+        FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
+        int width = 200;
+        int height = 300;
+        Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
+        return renderer.getImage();
+    }
+
+    public void convertToBitmapAndSaveFile(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
         String pageHTML = getHtmlCode(statementPage, model, request);
         File fileHTML = new File("page.html");
         FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));

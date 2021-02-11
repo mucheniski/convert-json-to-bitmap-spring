@@ -12,14 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.UUID;
 
 @Service
@@ -35,7 +33,7 @@ public class AccountService {
     private HTMLConverter htmlConverter;
 
     @Value("${default.imagePath}")
-    private String originalfilepath;
+    private String defatulImagePath;
 
     public Account findById(Long id) {
         return accountRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Id not found: " + id));
@@ -47,6 +45,11 @@ public class AccountService {
         statementRepresentation.setName(account.getName());
         statementRepresentation.setBalance(account.getBalance());
         return statementRepresentation;
+    }
+
+    public String convertHTMLtoBitmapAndEncodeToBase64(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+        BufferedImage imageBitmap = htmlConverter.convertHTMLToBitmap(statementPage, model, request);
+        return base64Converter.encodeImageToBase64(imageBitmap);
     }
 
     public StatementRepresentationWithFile encodeImageToBase64AndSaveFile(Long id, StatementRepresentationWithFile statementRepresentation) throws IOException {
@@ -71,8 +74,8 @@ public class AccountService {
         base64Converter.decodeBase64ToImageAndSaveFile(imgPath, savePath);
     }
 
-    public void convertHTMLtoBitmap(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
-        htmlConverter.convertToBitmap(statementPage, model, request);
+    public void convertHTMLtoBitmapAndSaveFile(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+        htmlConverter.convertToBitmapAndSaveFile(statementPage, model, request);
     }
 
     private String getImgPath(StatementRepresentationWithFile statementRepresentation) {
@@ -81,7 +84,7 @@ public class AccountService {
     }
 
     private String getFullPath(String fileName) {
-        return FileSystems.getDefault().getPath(originalfilepath, fileName).toString();
+        return FileSystems.getDefault().getPath(defatulImagePath, fileName).toString();
     }
 
 }
