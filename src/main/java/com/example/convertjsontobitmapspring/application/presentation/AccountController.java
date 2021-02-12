@@ -41,8 +41,7 @@ public class AccountController {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
         model.addAttribute("statement", statementRepresentation);
         ModelAndView statementPage = new ModelAndView("statement");
-        accountService.convertHTMLtoBitmapAndSaveFile(statementPage, model, request);
-        // accountService.convertHTMLtoBitmap(statementPage, model);
+        accountService.convertHTMLtoBitmapAndSaveFile(statementPage, model, request);        
         return statementPage;
     }
 
