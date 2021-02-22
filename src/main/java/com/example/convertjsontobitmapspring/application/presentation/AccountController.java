@@ -45,6 +45,10 @@ public class AccountController {
         return statementPage;
     }
 
+    /*
+        O Model e HttpServletRequest são inseridos na chamada para que o spring automaticamente
+        injete os dois ao método através do conceito de injeção de dependencias
+     */
     @GetMapping("/{id}/statementbase64")
     public String getStatementEncodeToBase64(@PathVariable Long id, Model model, HttpServletRequest request) throws Exception {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
