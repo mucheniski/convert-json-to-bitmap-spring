@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "245dee98-cb85-4b9d-80a9-b9b871f7de94",
+		"_postman_id": "5629bc02-c647-476d-86e0-32f535f86a5d",
 		"name": "bvtests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -83,7 +83,28 @@
 			"response": []
 		},
 		{
-			"name": "get html statement",
+			"name": "get base 64 statement",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/accounts/2/statementbase64",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"accounts",
+						"2",
+						"statementbase64"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get base html statement",
 			"request": {
 				"method": "GET",
 				"header": [],

@@ -63,6 +63,7 @@
 		</dependency>
 
 		<!-- https://jar-download.com/artifacts/org.xhtmlrenderer/core-renderer/R8pre2/source-code/org/xhtmlrenderer/swing/Java2DRenderer.java -->
+		<!-- https://mvnrepository.com/artifact/com.github.nifty-gui/nifty-java2d-renderer -->
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>
 			<artifactId>core-renderer</artifactId>
