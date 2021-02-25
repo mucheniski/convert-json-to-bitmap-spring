@@ -14,9 +14,9 @@ public class Base64Converter {
         byte[] bytes = toByteArray(bufferedImage, "bmp");
         String imageString = Base64.getEncoder().encodeToString(bytes);
         // Write base64 in file if you need
-//        FileWriter fileWriter = new FileWriter(savePath);
-//        fileWriter.write(imageString);
-//        fileWriter.close();
+        FileWriter fileWriter = new FileWriter("C:\\ws-developer\\convert-json-to-bitmap-spring\\img\\testencodebase64.txt");
+        fileWriter.write(imageString);
+        fileWriter.close();
         return imageString;
     }
 

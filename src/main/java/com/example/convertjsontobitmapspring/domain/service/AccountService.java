@@ -43,12 +43,15 @@ public class AccountService {
         Account account = findById(id);
         StatementRepresentation statementRepresentation = new StatementRepresentation();
         statementRepresentation.setName(account.getName());
+        statementRepresentation.setBankname(account.getBankname());
+        statementRepresentation.setAgency(account.getAgency());
+        statementRepresentation.setNumber(account.getNumber());
         statementRepresentation.setBalance(account.getBalance());
         return statementRepresentation;
     }
 
-    public String convertHTMLtoBitmapAndEncodeToBase64(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
-        BufferedImage imageBitmap = htmlConverter.convertHTMLToBitmap(statementPage, model, request);
+    public String convertHTMLtoBitmapAndEncodeToBase64(ModelAndView statementPage, Model model, HttpServletRequest request, int width, int height) throws Exception {
+        BufferedImage imageBitmap = htmlConverter.convertHTMLToBitmap(statementPage, model, request, width, height);
         return base64Converter.encodeImageToBase64(imageBitmap);
     }
 

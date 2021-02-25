@@ -32,13 +32,11 @@ public class HTMLConverter {
     @Autowired
     private ViewResolver viewResolver;
 
-    public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception  {
+    public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request, int width, int height) throws Exception  {
         String pageHTML = getHtmlCode(statementPage, model, request);
         // TODO: ver se pode ser gerado sem criar o page.html - Cria porém sempre substitui o arquivo a cada requisição.
         File fileHTML = new File("page.html");
         FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
-        int width = 200;
-        int height = 300;
         // TODO: verificar se precisa homologar, passar o repo mavem para o Lucas - Email enviado para lucas, aguardando retorno
         Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
         return renderer.getImage();

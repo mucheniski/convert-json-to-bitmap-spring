@@ -41,7 +41,7 @@ public class AccountController {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
         model.addAttribute("statement", statementRepresentation);
         ModelAndView statementPage = new ModelAndView("statement");
-        accountService.convertHTMLtoBitmapAndSaveFile(statementPage, model, request);        
+        // accountService.convertHTMLtoBitmapAndSaveFile(statementPage, model, request);
         return statementPage;
     }
 
@@ -50,11 +50,11 @@ public class AccountController {
         injete os dois ao método através do conceito de injeção de dependencias
      */
     @GetMapping("/{id}/statementbase64")
-    public String getStatementEncodeToBase64(@PathVariable Long id, Model model, HttpServletRequest request) throws Exception {
+    public String getStatementEncodeToBase64(@PathVariable Long id, Model model, HttpServletRequest request, @RequestParam int width, @RequestParam int height) throws Exception {
         StatementRepresentation statementRepresentation = accountService.fillStatement(id);
         model.addAttribute("statement", statementRepresentation);
         ModelAndView statementPage = new ModelAndView("statement");
-        return accountService.convertHTMLtoBitmapAndEncodeToBase64(statementPage, model, request);
+        return accountService.convertHTMLtoBitmapAndEncodeToBase64(statementPage, model, request, width, height);
     }
 
 }
