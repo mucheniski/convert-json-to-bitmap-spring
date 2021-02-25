@@ -34,10 +34,10 @@ public class HTMLConverter {
 
     public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request, int width, int height) throws Exception  {
         String pageHTML = getHtmlCode(statementPage, model, request);
-        // TODO: ver se pode ser gerado sem criar o page.html - Cria porém sempre substitui o arquivo a cada requisição.
-        File fileHTML = new File("page.html");
+        // TODO: ver se pode ser gerado sem criar o page.html - Criei o método para remover a pagina anterior antes de criar uma nova
+        File fileHTML = new File(defaultHTMLTemplatePath + "modelpage.html");
+        removeOlderPage(fileHTML);
         FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
-        // TODO: verificar se precisa homologar, passar o repo mavem para o Lucas - Email enviado para lucas, aguardando retorno
         Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
         return renderer.getImage();
     }
@@ -62,4 +62,11 @@ public class HTMLConverter {
         resolvedView.render(model.asMap(), request, mockHttpServletResponse);
         return mockHttpServletResponse.getContentAsString();
     }
+
+    private void removeOlderPage(File fileHtml) {
+        if(fileHtml.exists()) {
+            fileHtml.delete();
+        }
+    }
+
 }
