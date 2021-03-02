@@ -1,8 +1,6 @@
 package com.example.convertjsontobitmapspring.common;
 
-import com.example.convertjsontobitmapspring.domain.enums.FileType;
 import org.apache.commons.io.FileUtils;
-import org.aspectj.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -33,7 +31,7 @@ public class HTMLConverter {
     private ViewResolver viewResolver;
 
     public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request, int width, int height) throws Exception  {
-        String pageHTML = getHtmlCode(statementPage, model, request);
+        String pageHTML = getHtmlCodeString(statementPage, model, request);
         // TODO: ver se pode ser gerado sem criar o page.html - Criei o método para remover a pagina anterior antes de criar uma nova
         File fileHTML = new File(defaultHTMLTemplatePath + "modelpage.html");
         removeOlderPage(fileHTML);
@@ -42,10 +40,16 @@ public class HTMLConverter {
         return renderer.getImage();
     }
 
+    // TODO: ver como passar o logo no bitmap renderizado
     public void convertToBitmapAndSaveFile(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
-        String pageHTML = getHtmlCode(statementPage, model, request);
+        // String pageHTML = getHtmlCodeString(statementPage, model, request);
+        // File fileHTML = new File("page.html");
+        // FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
+
+        byte[] pageHTML = getHtmlCodeByte(statementPage, model, request);
         File fileHTML = new File("page.html");
-        FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
+        FileUtils.writeByteArrayToFile(fileHTML, pageHTML);
+
         int width = 200;
         int height = 300;
         Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
@@ -53,14 +57,21 @@ public class HTMLConverter {
         File fileBitmap = new File(defaultImagePath + "teste.bmp");
 
         // Write file on disk
-        ImageIO.write(image, "bmp", fileBitmap);
+        // ImageIO.write(image, "bmp", fileBitmap);
     }
 
-    private String getHtmlCode(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
-        View resolvedView = viewResolver.resolveViewName(statementPage.getViewName(), new Locale("pt", "BR"));
+    private String getHtmlCodeString(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
         MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
+        View resolvedView = viewResolver.resolveViewName(statementPage.getViewName(), new Locale("pt", "BR"));
         resolvedView.render(model.asMap(), request, mockHttpServletResponse);
         return mockHttpServletResponse.getContentAsString();
+    }
+
+    private byte[] getHtmlCodeByte(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
+        MockHttpServletResponse mockHttpServletResponse = new MockHttpServletResponse();
+        View resolvedView = viewResolver.resolveViewName(statementPage.getViewName(), new Locale("pt", "BR"));
+        resolvedView.render(model.asMap(), request, mockHttpServletResponse);
+        return mockHttpServletResponse.getContentAsByteArray();
     }
 
     private void removeOlderPage(File fileHtml) {
