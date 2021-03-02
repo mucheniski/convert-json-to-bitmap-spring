@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Locale;
 
 @Service
@@ -32,27 +34,20 @@ public class HTMLConverter {
 
     // TODO: ver como passar o logo no bitmap renderizado
     public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request, int width, int height) throws Exception  {
-        String pageHTML = getHtmlCodeString(statementPage, model, request);
-        // TODO: ver se pode ser gerado sem criar o modelpage.html - Criei o método para remover a pagina anterior antes de criar uma nova
-        File fileHTML = new File(defaultHTMLTemplatePath + "modelpage.html");
-        removeOlderPage(fileHTML);
-        FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
-        Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
+        byte[] pageHTML = getHtmlCodeByte(statementPage, model, request);
+        Path tempFile = Files.createTempFile("sampleTempFile", "html");
+        FileUtils.writeByteArrayToFile(tempFile.toFile(), pageHTML);
+        Java2DRenderer renderer = new Java2DRenderer(tempFile.toFile(), width, height);
         return renderer.getImage();
     }
 
     public void convertToBitmapAndSaveFile(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
-        // String pageHTML = getHtmlCodeString(statementPage, model, request);
-        // File fileHTML = new File("page.html");
-        // FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
-
         byte[] pageHTML = getHtmlCodeByte(statementPage, model, request);
-        File fileHTML = new File("page.html");
-        FileUtils.writeByteArrayToFile(fileHTML, pageHTML);
-
+        Path tempFile = Files.createTempFile("sampleTempFile", "html");
+        FileUtils.writeByteArrayToFile(tempFile.toFile(), pageHTML);
         int width = 200;
         int height = 300;
-        Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
+        Java2DRenderer renderer = new Java2DRenderer(tempFile.toFile(), width, height);
         BufferedImage image = renderer.getImage();
         File fileBitmap = new File(defaultImagePath + "teste.bmp");
     }
