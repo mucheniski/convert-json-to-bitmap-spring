@@ -30,9 +30,10 @@ public class HTMLConverter {
     @Autowired
     private ViewResolver viewResolver;
 
+    // TODO: ver como passar o logo no bitmap renderizado
     public BufferedImage convertHTMLToBitmap(ModelAndView statementPage, Model model, HttpServletRequest request, int width, int height) throws Exception  {
         String pageHTML = getHtmlCodeString(statementPage, model, request);
-        // TODO: ver se pode ser gerado sem criar o page.html - Criei o método para remover a pagina anterior antes de criar uma nova
+        // TODO: ver se pode ser gerado sem criar o modelpage.html - Criei o método para remover a pagina anterior antes de criar uma nova
         File fileHTML = new File(defaultHTMLTemplatePath + "modelpage.html");
         removeOlderPage(fileHTML);
         FileUtils.writeStringToFile(fileHTML, pageHTML, Charset.forName("UTF-8"));
@@ -40,7 +41,6 @@ public class HTMLConverter {
         return renderer.getImage();
     }
 
-    // TODO: ver como passar o logo no bitmap renderizado
     public void convertToBitmapAndSaveFile(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
         // String pageHTML = getHtmlCodeString(statementPage, model, request);
         // File fileHTML = new File("page.html");
@@ -55,9 +55,6 @@ public class HTMLConverter {
         Java2DRenderer renderer = new Java2DRenderer(fileHTML, width, height);
         BufferedImage image = renderer.getImage();
         File fileBitmap = new File(defaultImagePath + "teste.bmp");
-
-        // Write file on disk
-        // ImageIO.write(image, "bmp", fileBitmap);
     }
 
     private String getHtmlCodeString(ModelAndView statementPage, Model model, HttpServletRequest request) throws Exception {
